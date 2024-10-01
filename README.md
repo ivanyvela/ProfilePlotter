@@ -1,2 +1,5 @@
 # Profile-Plotter
-A python profile plotter for geophysical data. Departing from pmc93's profiler repository
+
+
+## Description
+This was developed from Paul McLachlan's Profiler code when he was at HGG. The name has been change to ProfilePlotter since there also is an instrument called Profiler
