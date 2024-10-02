@@ -1,4 +1,4 @@
-# Profile-Plotter
+# ProfilePlotter
 
 
 ## Description
