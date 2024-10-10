@@ -12,16 +12,15 @@ Created on 9 October 09:09:32 2024
 #TODO: The dynamic calculation of square, text size and spacing of Plot.addBoreholeLegend uses a single formula for all elements. Works well for 2 to 8 lithologies
 #TODO: Fit the legend into a TEMprofile figure. Figure out the coordinate system to plot things on in a sandbox 
 #TODO: allow to choose which DOI is to be plotted
-#TODO: review the aarhus colors rgb list. when compared with some WB profiles it is not totally kosher
+#TODO: review the interpolation method. It can be both done faster and there needs to be an option for just grabbing the nearest neighbour to the profile
 #Inmediate TODOS:
-#TODO: write profile name somewhere in the profile and in the profile borehole legend
 #TODO: PC_01 only has profiler data in it, and therefore gives an error. see #TODO: Model.createProfiles uses ttem_model_idx. How about if no tTEM in it?
-#TODO: Give the option of fixing the legend into
 #TODO: profiler and borehole elevation problems were fixed but weird data structure left behind
 #TODO: see LLM Profiler_Inefficiency
 #TODO: Plot tTEM models with xm distance check---> check against actual tTEM map
 #TODO: make profiler class specially thinking about the profileMap method
 #TODO: when plotting sTEM or profiler data, the DOI is not very clear
+#TODO: all profiles get a certain axis fontseize no matter their length, but then because the long ones do not fit into an A4 page, they need to get squeezed and the fontsize looks small, which looks amateur on reports
 
 
 import pandas as pd
