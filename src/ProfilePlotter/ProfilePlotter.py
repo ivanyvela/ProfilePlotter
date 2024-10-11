@@ -8,7 +8,6 @@ Created on 9 October 09:09:32 2024
 #TODO: profiler.py:344: RuntimeWarning: something is dividing by NaN and consuming time in the Model.createProfiles, most likely the interpolation
 #TODO: profiler might be a bad name, when we also have an instrument by the same name?
 #TODO: the interpotaling functions is too slow, and it consumes most of the time
-#TODO: manage a way of naming the ttem and stem (stem includes profiler) model groups instead of stem_model_idx and the same for profiles instead of profile_idx
 #TODO: The dynamic calculation of square, text size and spacing of Plot.addBoreholeLegend uses a single formula for all elements. Works well for 2 to 8 lithologies
 #TODO: Fit the legend into a TEMprofile figure. Figure out the coordinate system to plot things on in a sandbox 
 #TODO: allow to choose which DOI is to be plotted
