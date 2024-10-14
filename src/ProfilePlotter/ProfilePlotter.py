@@ -28,7 +28,6 @@ import geopandas as gpd
 from shapely.geometry import LineString
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
-#from colormaps import getAarhusCols, getParulaCols
 from matplotlib.colors import BoundaryNorm, LinearSegmentedColormap, ListedColormap
 from matplotlib.collections import PolyCollection
 from matplotlib.patches import Polygon
