@@ -20,7 +20,7 @@ Created on 9 October 09:09:32 2024
 #TODO: make profiler class specially thinking about the profileMap method
 #TODO: when plotting sTEM or profiler data, the DOI is not very clear
 #TODO: all profiles get a certain axis fontseize no matter their length, but then because the long ones do not fit into an A4 page, they need to get squeezed and the fontsize looks small, which looks amateur on reports
-
+#
 
 import pandas as pd
 import numpy as np
@@ -42,3 +42,4 @@ from rasterio.windows import from_bounds
 from rasterio.plot import show
 
 import textwrap
+
