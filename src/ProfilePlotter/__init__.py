@@ -1,1 +1,1 @@
-import ProfilePlotter
+import ProfilePlotter.ProfilePlotter
