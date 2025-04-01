@@ -329,23 +329,7 @@ class Model:
         return zi
 
     def interpLIN(self, x, z):
-        """
-
-
-        Parameters
-        ----------
-        x : TYPE
-            DESCRIPTION.
-        z : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        zi : TYPE
-            DESCRIPTION.
-
-        """
-
+  
         # Create interpolation function, excluding nan values
         interp_func = interp1d(x[~np.isnan(z)], z[~np.isnan(z)],
                                kind='linear', fill_value="extrapolate")
