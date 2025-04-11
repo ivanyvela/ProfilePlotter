@@ -1,0 +1,7 @@
+id	utm_x	utm_y	elev	top_depths	bot_depths	lith_names	colors	lith_descriptions
+4E	704488.87	414963.93	593	0	10	Superficial top deposits	lightblue	Superficial top deposits
+4E	704488.87	414963.93	593	10	15	Pleistocene to recent lake beds	lightblue	Pleistocene to recent lake beds
+4E	704488.87	414963.93	593	15	30	Rhyolites with intercalated andesites	black	Rhyolites with intercalated andesites
+4E	704488.87	414963.93	593	30	40	Olivine basalts	olive	Olivine basalts
+4E	704488.87	414963.93	593	40	60	Augite and analcine basalts	olive	Augite and analcine basalts
+4E	704488.87	414963.93	593	60	85	Turkana grits	beige	Turkana grits

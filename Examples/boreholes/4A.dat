@@ -1,0 +1,6 @@
+id	utm_x	utm_y	elev	top_depths	bot_depths	lith_names	colors	lith_descriptions
+4A	704142	414974	601	0	8	Top brownish soils	lightblue	Top brownish soils
+4A	704142	414974	601	8	18	Alluvial sand deposits	red	Alluvial sand deposits
+4A	704142	414974	601	18	38	River bed/presence of boulders (aquiferrous)	red	River bed/presence of boulders (aquiferrous)
+4A	704142	414974	601	38	55	Weathered to fractured basalts	yellowgreen	Weathered to fractured basalts
+4A	704142	414974	601	55	60	Fractured biotite gneisses	black	Fractured biotite gneisses

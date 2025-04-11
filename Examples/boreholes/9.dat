@@ -1,0 +1,9 @@
+id	utm_x	utm_y	elev	top_depths	bot_depths	lith_names	colors	lith_descriptions	Unnamed: 9	Unnamed: 10	top_elev	bott_elev	Unnamed: 13	Unnamed: 14	Unnamed: 15
+9	703505.27	414984.21	579.3	0	6	Loose eolian sands and silt	lightblue	Loose eolian sands and silt			588	582	6	0	6
+9	703505.27	414984.21	579.3	6	21	Gravelly, sticky clay	lightblue	Gravelly, sticky clay			582	567	15	6	21
+9	703505.27	414984.21	579.3	21	24	Sand and gravels	red	Sand and gravels			567	564	3	21	24
+9	703505.27	414984.21	579.3	24	40	Medium sands intercalated with clay	red	Medium sands intercalated with clay			564	548	16	24	40
+9	703505.27	414984.21	579.3	40	55	Rhyolitic gravels intercalated with clay lenses	lightblue	Rhyolitic gravels intercalated with clay lenses			548	533	15	40	55
+9	703505.27	414984.21	579.3	55	63	Rhyoiolitic lava	saddlebrown	Rhyoiolitic lava			533	525	8	55	63
+9	703505.27	414984.21	579.3	63	83	Small to medium rhyiolitic deposits	sandybrown	Small to medium rhyiolitic deposits			525	505	20	63	83
+9	703505.27	414984.21	579.3	83	91	Weathered to fractured rhyolite	sandybrown	Weathered to fractured rhyolite			505	497	8	83	91
