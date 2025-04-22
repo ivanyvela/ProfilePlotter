@@ -385,6 +385,8 @@ class Model:
 
             elev_new = self.interpIDW(x, y, elev, xi, yi, power=2, interp_radius=interp_radius)
 
+
+
             # Debug statement before calling interpLIN
             #print(f"Interpolated elevation: {elev_new}")
             
@@ -397,7 +399,6 @@ class Model:
                 print(f"Interpolated elevation: {elev_new}")
                 print(f"xi: {xi}")
                 print(f"yi: {yi}")
-                print(f"dists: {dists}")
                 print(f"elev: {elev}")
                 raise e  # Re-raise the exception after logging
 
