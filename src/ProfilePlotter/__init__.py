@@ -1,1 +1,1 @@
-import ProfilePlotter.ProfilePlotter
+from .ProfilePlotter import Model, Plot
