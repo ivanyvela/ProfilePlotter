@@ -21,6 +21,7 @@
 #TODO: allow to choose which DOI is to be plotted
 #TODO: add a margin signature for the different sounding types and legend possibility
 #TODO: give the possibility of choosing which legends/infos to output, like sounding type (tTEM, sTEM, profiler, borehole), projection, colorscale, DOI....
+#TODO: else statement in model createProfiles regarding filetype doesnt make sense
 #-------------------------------------------------MIDTERM TODOS-----------------------------------------------
 
 

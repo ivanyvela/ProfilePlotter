@@ -163,7 +163,7 @@ class Model:
         
         #self.tem_models[idx[0]] = new_tem_model
 
-    def loadProfileCoords(self, profile_coord_paths, file_type='csv'):
+    def loadProfileCoords(self, profile_coord_paths, file_type='shp'):
 
         if file_type == 'csv':
 
