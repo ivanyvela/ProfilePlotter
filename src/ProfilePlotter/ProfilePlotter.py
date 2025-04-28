@@ -1408,6 +1408,10 @@ class Plot:
         # Unpack the tuple to get profile_idx and plotted_boreholes
         profile_idx, plotted_boreholes = plotted_boreholes_tuple
 
+        if not plotted_boreholes:
+            print(f"No boreholes plotted for profile {self.model.profile_filenames[profile_idx]}. No legend created")
+            return #exit function early
+
         # Retrieve the filename for the current profile
         filename = self.model.profile_filenames[profile_idx]
 
