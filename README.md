@@ -28,3 +28,10 @@ conda activate profplotter
 #### (Optional but recommended)
 pip install -e .
 
+
+### 🌍 Try and read one of the examples
+IT's easier to follow with a Jupyter notebook
+
+#### Run the Kakuma.ipynb 
+
+### 🧱👷‍♂️ Create your own! 
