@@ -22,9 +22,9 @@ cd profileplotter
 #use the yaml
 conda env create -f profplotter.yml
 
-# Activate it
+#### Activate it
 conda activate profplotter
 
-# (Optional but recommended)
+#### (Optional but recommended)
 pip install -e .
 
