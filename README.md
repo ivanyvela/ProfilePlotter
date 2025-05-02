@@ -9,7 +9,7 @@ This was developed from Paul McLachlan's Profiler code when he was at the HydroG
 
 ### 📦 Clone the repository
 #### Option 1: GitHub (HTTPS)
-```bash
+
 git clone https://github.com/yourusername/profileplotter.git
 cd profileplotter
 #### Option 2: GitLab (SSH, for internal collaborators)
