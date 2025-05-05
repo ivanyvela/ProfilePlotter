@@ -835,7 +835,7 @@ class Plot:
         plt.draw()#Force the rendering, otherwise the x_ticks might not get set right for some cases 
 
         self.x_ticks = ax.get_xticks()
-        print('x_ticks position 4:', self.x_ticks)     
+        #print('x_ticks position 4:', self.x_ticks)     
 
 
     def TEMSounding(self, model_type, model_idx, sounding_idx, vmin=0, vmax=1000, ax=None):
@@ -1057,6 +1057,95 @@ class Plot:
 
         return profile_idx, plotted_boreholes   # Return the list of plotted boreholes
 
+    def addBoreholeLegend(self, plotted_boreholes_tuple, title="Borehole Legend", text_size=12, max_char=150):
+            
+
+        # Unpack the tuple to get profile_idx and plotted_boreholes
+        profile_idx, plotted_boreholes = plotted_boreholes_tuple
+
+        if not plotted_boreholes:
+            print(f"No boreholes plotted for profile {self.model.profile_filenames[profile_idx]}. No legend created")
+            return #exit function early
+
+        # Retrieve the filename for the current profile
+        filename = self.model.profile_filenames[profile_idx]
+
+        # Parameters for BoreholeLegendSizing
+        min_text_size = 10  # Ensuring readability
+        max_text_size = 16
+        titlesize_factor = 1.25
+        min_square_size = 0.5  # Ensure squares aren't too small
+        max_square_size = 0.8  # Limit max square size to avoid overlap
+        min_spacing = 0.2
+        max_spacing = 0.5
+
+        min_text_position = 0.8  # Move closer for fewer lithologies
+        max_text_position = 1.0  # Standard position
+        
+        relevant_lithologies = {} #= number of different colors present in the profile
+
+        # Collect lithologies from the provided boreholes
+        for bh in plotted_boreholes:
+            for lith_name, color in zip(bh['lith_names'], bh['colors']):
+                if color not in relevant_lithologies:
+                    relevant_lithologies[color] = []
+                if lith_name not in relevant_lithologies[color]:
+                    relevant_lithologies[color].append(lith_name)
+        # Sort colors to have consistent order
+        sorted_colors = sorted(relevant_lithologies.keys(), key=lambda c: relevant_lithologies[c])
+
+        # Calculate dynamic sizes
+        num_elements = len(relevant_lithologies)
+        text_size = self.boreholeLegendSizing(num_elements, min_text_size, max_text_size)
+        square_size = self.boreholeLegendSizing(num_elements, min_square_size, max_square_size, reverse=True)
+        spacing = self.boreholeLegendSizing(num_elements, min_spacing, max_spacing)
+        text_position = self.boreholeLegendSizing(num_elements, min_text_position, max_text_position, reverse=True)
+
+        # start separate figure, set the legend's position and spacing
+        fig, ax = plt.subplots(1, 1, figsize=(20, 5 + 2 * (num_elements - 2) / 6))
+        ax.set_aspect('equal')
+        ax.set_ylim(-num_elements - 1, 1)
+        y_position = 0
+
+        for color in relevant_lithologies:
+            lith_names = relevant_lithologies[color]
+            
+            # Wrap the text if it is too long
+            wrapped_label = textwrap.fill(' / '.join(lith_names), width=110)
+            
+            # Plot the color rectangle
+            ax.add_patch(plt.Rectangle((0, y_position - 0.1), square_size, square_size, color=color))
+            
+            # Calculate dynamic vertical adjustment based on the square size
+            vertical_adjustment = (square_size - (square_size/ num_elements+2)*0.1) / 2 # move the square size minus 10% of the ratio of squares to vertical axis size (num_elements+2)
+            
+            # Plot the wrapped text with dynamic adjustment
+            ax.text(text_position, y_position + vertical_adjustment, wrapped_label, va='center', fontsize=text_size)
+            
+            # Update the y-position based on the number of lines
+            num_lines = wrapped_label.count('\n') + 1
+            y_position -= square_size + spacing
+
+        # Adjust title font size dynamically as well
+        title_font_size = text_size*titlesize_factor
+        filename_font_size = title_font_size / 2
+
+
+        # Set axis limits and labels
+        ax.set_title('Borehole Legend', fontsize=title_font_size, loc='left', weight='bold')
+        # Add the filename next to the title with smaller font size
+        ax.text(-0.05, 1.08, f" {filename}", fontsize=filename_font_size, ha='left', va='center', transform=ax.transAxes, weight='normal')
+        ax.axis('off')
+
+        return fig, ax #necessary for saving the figures in this implementation
+
+      
+    def boreholeLegendSizing(self, num_elements, min_size, max_size, reverse=False):
+        scale_factor = max(0, min(1, (8 - num_elements) / 6))  # 8 can be adjusted to your maximum expected elements
+        if reverse:
+            return max_size - scale_factor * (max_size - min_size)
+        else:
+            return min_size + scale_factor * (max_size - min_size) 
 
     def addNMRSoundings(self, profile_idx, nmr_list, param, ax, vmin=1, vmax=1000, elev=None,
                         log=True, cmap=plt.cm.viridis, n_bins=16, discrete_colors=False,
@@ -1402,95 +1491,7 @@ class Plot:
         ax.set_title(title)
 
 
-    def addBoreholeLegend(self, plotted_boreholes_tuple, title="Borehole Legend", text_size=12, max_char=150):
-            
 
-        # Unpack the tuple to get profile_idx and plotted_boreholes
-        profile_idx, plotted_boreholes = plotted_boreholes_tuple
-
-        if not plotted_boreholes:
-            print(f"No boreholes plotted for profile {self.model.profile_filenames[profile_idx]}. No legend created")
-            return #exit function early
-
-        # Retrieve the filename for the current profile
-        filename = self.model.profile_filenames[profile_idx]
-
-        # Parameters for BoreholeLegendSizing
-        min_text_size = 10  # Ensuring readability
-        max_text_size = 16
-        titlesize_factor = 1.25
-        min_square_size = 0.5  # Ensure squares aren't too small
-        max_square_size = 0.8  # Limit max square size to avoid overlap
-        min_spacing = 0.2
-        max_spacing = 0.5
-
-        min_text_position = 0.8  # Move closer for fewer lithologies
-        max_text_position = 1.0  # Standard position
-        
-        relevant_lithologies = {} #= number of different colors present in the profile
-
-        # Collect lithologies from the provided boreholes
-        for bh in plotted_boreholes:
-            for lith_name, color in zip(bh['lith_names'], bh['colors']):
-                if color not in relevant_lithologies:
-                    relevant_lithologies[color] = []
-                if lith_name not in relevant_lithologies[color]:
-                    relevant_lithologies[color].append(lith_name)
-        # Sort colors to have consistent order
-        sorted_colors = sorted(relevant_lithologies.keys(), key=lambda c: relevant_lithologies[c])
-
-        # Calculate dynamic sizes
-        num_elements = len(relevant_lithologies)
-        text_size = self.boreholeLegendSizing(num_elements, min_text_size, max_text_size)
-        square_size = self.boreholeLegendSizing(num_elements, min_square_size, max_square_size, reverse=True)
-        spacing = self.boreholeLegendSizing(num_elements, min_spacing, max_spacing)
-        text_position = self.boreholeLegendSizing(num_elements, min_text_position, max_text_position, reverse=True)
-
-        # start separate figure, set the legend's position and spacing
-        fig, ax = plt.subplots(1, 1, figsize=(20, 5 + 2 * (num_elements - 2) / 6))
-        ax.set_aspect('equal')
-        ax.set_ylim(-num_elements - 1, 1)
-        y_position = 0
-
-        for color in relevant_lithologies:
-            lith_names = relevant_lithologies[color]
-            
-            # Wrap the text if it is too long
-            wrapped_label = textwrap.fill(' / '.join(lith_names), width=110)
-            
-            # Plot the color rectangle
-            ax.add_patch(plt.Rectangle((0, y_position - 0.1), square_size, square_size, color=color))
-            
-            # Calculate dynamic vertical adjustment based on the square size
-            vertical_adjustment = (square_size - (square_size/ num_elements+2)*0.1) / 2 # move the square size minus 10% of the ratio of squares to vertical axis size (num_elements+2)
-            
-            # Plot the wrapped text with dynamic adjustment
-            ax.text(text_position, y_position + vertical_adjustment, wrapped_label, va='center', fontsize=text_size)
-            
-            # Update the y-position based on the number of lines
-            num_lines = wrapped_label.count('\n') + 1
-            y_position -= square_size + spacing
-
-        # Adjust title font size dynamically as well
-        title_font_size = text_size*titlesize_factor
-        filename_font_size = title_font_size / 2
-
-
-        # Set axis limits and labels
-        ax.set_title('Borehole Legend', fontsize=title_font_size, loc='left', weight='bold')
-        # Add the filename next to the title with smaller font size
-        ax.text(-0.05, 1.08, f" {filename}", fontsize=filename_font_size, ha='left', va='center', transform=ax.transAxes, weight='normal')
-        ax.axis('off')
-
-        return fig, ax #necessary for saving the figures in your implementation
-
-      
-    def boreholeLegendSizing(self, num_elements, min_size, max_size, reverse=False):
-        scale_factor = max(0, min(1, (8 - num_elements) / 6))  # 8 can be adjusted to your maximum expected elements
-        if reverse:
-            return max_size - scale_factor * (max_size - min_size)
-        else:
-            return min_size + scale_factor * (max_size - min_size) 
         
 
     def profileMap(self, profile_idx, tif_file=None, length_tick_size=100, modeltype_1_size=1, 
