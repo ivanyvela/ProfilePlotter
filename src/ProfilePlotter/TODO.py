@@ -23,6 +23,7 @@
 #TODO: give the possibility of choosing which legends/infos to output, like sounding type (tTEM, sTEM, profiler, borehole), projection, colorscale, DOI....
 #TODO: else statement in model createProfiles regarding filetype doesnt make sense
 #TODO: Model-CreateProfiles is called so in plural, but it seems you can only pass it one profile at a time? 
+#TODO: in Plot.ProfileMap, add an option for choosing the color of the profile line with its ticks and the start and end of profile. Black is not always visible
 #-------------------------------------------------MIDTERM TODOS-----------------------------------------------
 
 
