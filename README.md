@@ -30,7 +30,7 @@ pip install -e .
 
 
 ### 🌍 Try and read one of the examples
-IT's easier to follow with a Jupyter notebook
+Go to the Examples folder. It's easier to follow with a Jupyter notebook
 
 #### Run the Kakuma.ipynb 
 
