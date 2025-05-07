@@ -8,6 +8,7 @@
 #TODO: all profiles get a certain axis fontseize no matter their length, but then because the long ones do not fit into an A4 page, they need to 
 # get squeezed and the fontsize looks small, which looks amateur on reports
 #TODO: ask Andy the issue he wanted to resolve regarding the aspect ratio of the outputtet 
+#TODO: when creating maps ask whether one wants it to be squared or not a part from whether one wants start, end and ticks (from Denys) 
 #-------------------------------------------------INMEDIATE TODOS-----------------------------------------------
 
 
