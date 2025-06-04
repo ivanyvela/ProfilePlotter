@@ -115,26 +115,26 @@ class Model:
 
         
     def combineModels(self, idx):
-        
+
         idx = np.sort(idx)
-        
-        new_tem_model = self.tem_models[idx[0]]
-        
+
+        new_tem_model = self.ttem_models[idx[0]]
+
         for i in idx[1:]:
-            
-            
-            new_tem_model['x'] = np.append(new_tem_model['x'], self.tem_models[i]['x'])
-            new_tem_model['y'] = np.append(new_tem_model['y'], self.tem_models[i]['y'])
-            new_tem_model['elev'] = np.append(new_tem_model['elev'], self.tem_models[i]['elev'])
-            new_tem_model['rhos'] = np.append(new_tem_model['rhos'], self.tem_models[i]['rhos'], axis=0)
-            new_tem_model['depths'] = np.append(new_tem_model['depths'], self.tem_models[i]['depths'], axis=0)
-            
-            new_tem_model['doi_con'] = np.append(new_tem_model['doi_con'], self.tem_models[i]['doi_con'])
-            new_tem_model['doi_standard'] = np.append(new_tem_model['doi_standard'], self.tem_models[i]['doi_standard'])
-            
-            new_tem_model['residual'] = np.append(new_tem_model['residual'], self.tem_models[i]['residual'])
-            
-            new_tem_model['line_num'] = np.append(new_tem_model['line_num'], self.tem_models[i]['line_num'])
+
+
+            new_tem_model['x'] = np.append(new_tem_model['x'], self.ttem_models[i]['x'])
+            new_tem_model['y'] = np.append(new_tem_model['y'], self.ttem_models[i]['y'])
+            new_tem_model['elev'] = np.append(new_tem_model['elev'], self.ttem_models[i]['elev'])
+            new_tem_model['rhos'] = np.append(new_tem_model['rhos'], self.ttem_models[i]['rhos'], axis=0)
+            new_tem_model['depths'] = np.append(new_tem_model['depths'], self.ttem_models[i]['depths'], axis=0)
+
+            new_tem_model['doi_con'] = np.append(new_tem_model['doi_con'], self.ttem_models[i]['doi_con'])
+            new_tem_model['doi_standard'] = np.append(new_tem_model['doi_standard'], self.ttem_models[i]['doi_standard'])
+
+            new_tem_model['residual'] = np.append(new_tem_model['residual'], self.ttem_models[i]['residual'])
+
+            new_tem_model['line_num'] = np.append(new_tem_model['line_num'], self.ttem_models[i]['line_num'])
 
            
         #del self.tem_models[idx[1:]]
@@ -444,7 +444,7 @@ class Model:
                     bh_dict['n_layers'] = len(bh_df)
                     bh_dict['x'] = bh_df['utm_x'].values[0]
                     bh_dict['y'] = bh_df['utm_y'].values[0]
-                    if 'elev' in bh_dict:
+                    if 'elev' in bh_df.columns:
                         bh_dict['elevation'] = bh_df['elev'].values[0]
                     else:
                         bh_dict['elevation'] = 0
@@ -513,8 +513,8 @@ class Plot:
                            marker='.', c=ttem_color, s=1, label='tTEM data')
 
             else:
-                ax.scatter(self.model.tem_models[i]['x'],
-                           self.model.tem_models[i]['y'],
+                ax.scatter(self.model.ttem_models[i]['x'],
+                           self.model.ttem_models[i]['y'],
                            marker='.', c=ttem_color, s=1)
 
         for i in range(len(self.model.stem_models)):
@@ -526,8 +526,8 @@ class Plot:
                            label='sTEM data')
 
             else:
-                ax.scatter(self.model.tem_models[i]['x'],
-                           self.model.tem_models[i]['y'],
+                ax.scatter(self.model.stem_models[i]['x'],
+                           self.model.stem_models[i]['y'],
                            marker='.', c=ttem_color, s=10, ec='k')
 
         if len(self.model.profiles) > 10:
