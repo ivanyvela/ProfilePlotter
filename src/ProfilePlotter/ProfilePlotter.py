@@ -300,9 +300,10 @@ class Model:
         # Set weights to 0 for points outside the specified radius
         weights[dists > interp_radius] = 0
 
-        # Normalize weights for each grid point
-        weights /= np.sum(weights, axis=0)
-
+        # Normalize weights for each grid point and avoid division by zero
+        denom = np.sum(weights, axis=0)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            weights = np.where(denom == 0, 0, weights / denom)
         # Interpolate values using weighted average
         zi = np.sum(z[:, np.newaxis] * weights, axis=0)
 
