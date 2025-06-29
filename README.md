@@ -41,4 +41,5 @@ Go to the Examples folder. It's easier to follow with a Jupyter notebook
 `createProfiles` can now be called with `ttem_model_idx=None` to generate the
 profile geometry using only sTEM or Profiler soundings. This allows projecting
 these soundings along a profile even when no tTEM models are available within
-the search radius.
+the search radius. Internally this uses a new `createProfileBase` method which
+builds the profile geometry from any available data types.

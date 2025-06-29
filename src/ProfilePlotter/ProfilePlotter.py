@@ -300,21 +300,30 @@ class Model:
         # Set weights to 0 for points outside the specified radius
         weights[dists > interp_radius] = 0
 
-        # Normalize weights for each grid point
-        weights /= np.sum(weights, axis=0)
+        # Normalize weights for each grid point and avoid division by zero
+        denom = np.sum(weights, axis=0)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            weights = np.where(denom == 0, 0, weights / denom)
 
         # Interpolate values using weighted average
         zi = np.sum(z[:, np.newaxis] * weights, axis=0)
 
+        # mark grid points with no nearby data as NaN
+        zi[denom == 0] = np.nan
+
         return zi
 
     def interpLIN(self, x, z):
-  
-        # Create interpolation function, excluding nan values
-        interp_func = interp1d(x[~np.isnan(z)], z[~np.isnan(z)],
-                               kind='linear', fill_value="extrapolate")
+
+        valid = ~np.isnan(z)
+        if not np.any(valid):
+            return np.zeros_like(z)
+
+        # Create interpolation function using available values
+        interp_func = interp1d(x[valid], z[valid], kind="linear",
+                               fill_value="extrapolate")
         zi = z.copy()
-        zi[np.isnan(z)] = interp_func(x[np.isnan(z)])
+        zi[~valid] = interp_func(x[~valid])
 
         if np.isnan(zi[-1]):
             zi[-1] = zi[-2]
@@ -357,7 +366,10 @@ class Model:
             if len(x_all) > 0:
                 elev_new = self.interpIDW(x_all, y_all, elev_all, xi, yi,
                                           power=2, interp_radius=interp_radius)
-                elev_new = self.interpLIN(dists, elev_new)
+                if np.all(np.isnan(elev_new)):
+                    elev_new = np.zeros_like(xi)
+                else:
+                    elev_new = self.interpLIN(dists, elev_new)
             else:
                 elev_new = np.zeros_like(xi)
 
@@ -422,15 +434,17 @@ class Model:
             #print(f"dists: {dists}")
             #print(f"elev: {elev}")
 
-            elev_new = self.interpIDW(x, y, elev, xi, yi, power=2, interp_radius=interp_radius)
-
-
+            elev_new = self.interpIDW(x, y, elev, xi, yi, power=2,
+                                      interp_radius=interp_radius)
 
             # Debug statement before calling interpLIN
             #print(f"Interpolated elevation: {elev_new}")
-            
+
             try:
-                elev_new = self.interpLIN(dists, elev_new)
+                if np.all(np.isnan(elev_new)):
+                    elev_new = np.zeros_like(xi)
+                else:
+                    elev_new = self.interpLIN(dists, elev_new)
             except ValueError as e:
                 print(f"Error occurred with profile: {filename}")
                 print(f"dists: {dists}")
