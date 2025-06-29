@@ -321,20 +321,76 @@ class Model:
 
         return zi
 
-    def createProfiles(self, ttem_model_idx, profile_idx='all', model_spacing=10, interp_radius=40):
-        #this only create profiles that contain tTEM models
-        #we need to create an option where the interpolation method can be chosen: nearest neighbout, krigging, IDW...
+    def createProfileBase(self, profile_idx='all', model_spacing=10, interp_radius=40):
+        """Generate base profile geometry without interpolating tTEM models.
+
+        This method computes the interpolated profile coordinates (``xi`` and
+        ``yi``) and the cumulative distance along the profile. Elevations are
+        estimated using all loaded model types (tTEM, sTEM and Profiler) if
+        available. It is intended for cases where no tTEM models are present but
+        sTEM or profiler soundings should still be projected onto the profile.
+        """
+
         if profile_idx == 'all':
-            profile_idx = range(0, len(self.profiles))
-        elif type(profile_idx) != list:
+            profile_idx = range(len(self.profiles))
+        elif not isinstance(profile_idx, list):
             profile_idx = [profile_idx]
+
+        # gather coordinates and elevations from all available model types
+        x_all, y_all, elev_all = [], [], []
+        for mod in self.ttem_models + self.stem_models + self.profiler_models:
+            x_all.extend(mod['x'])
+            y_all.extend(mod['y'])
+            elev_all.extend(mod['elev'])
+
+        if len(x_all) > 0:
+            x_all = np.asarray(x_all)
+            y_all = np.asarray(y_all)
+            elev_all = np.asarray(elev_all)
+
+        for idx in profile_idx:
+            x_p = self.profiles[idx]['x']
+            y_p = self.profiles[idx]['y']
+
+            xi, yi, dists = self.interpCoords(x_p, y_p, distance=model_spacing)
+
+            if len(x_all) > 0:
+                elev_new = self.interpIDW(x_all, y_all, elev_all, xi, yi,
+                                          power=2, interp_radius=interp_radius)
+                elev_new = self.interpLIN(dists, elev_new)
+            else:
+                elev_new = np.zeros_like(xi)
+
+            self.profiles[idx].update({'elev': elev_new,
+                                       'distances': dists,
+                                       'xi': xi,
+                                       'yi': yi})
+
+    def createProfiles(self, ttem_model_idx=None, profile_idx='all', model_spacing=10, interp_radius=40):
+        """Interpolate model data along profiles.
+
+        If ``ttem_model_idx`` is ``None`` or no tTEM models are loaded, only the
+        base profile geometry is created using :func:`createProfileBase`.
+        """
+
+        if profile_idx == 'all':
+            profile_idx = range(len(self.profiles))
+        elif not isinstance(profile_idx, list):
+            profile_idx = [profile_idx]
+
+        if ttem_model_idx is None or len(self.ttem_models) == 0:
+            # Only compute the profile geometry based on available models
+            self.createProfileBase(profile_idx=profile_idx,
+                                   model_spacing=model_spacing,
+                                   interp_radius=interp_radius)
+            return
 
         rhos = self.ttem_models[ttem_model_idx]['rhos']
         depths = self.ttem_models[ttem_model_idx]['depths']
         x = self.ttem_models[ttem_model_idx]['x']
         y = self.ttem_models[ttem_model_idx]['y']
-        elev = self.ttem_models[ttem_model_idx]['elev'] 
-        doi = self.ttem_models[ttem_model_idx]['doi_standard'] 
+        elev = self.ttem_models[ttem_model_idx]['elev']
+        doi = self.ttem_models[ttem_model_idx]['doi_standard']
 
         for idx in profile_idx:
             # Add debug statement to print the profile filename
