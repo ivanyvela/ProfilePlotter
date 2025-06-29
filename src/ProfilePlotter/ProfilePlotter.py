@@ -321,7 +321,7 @@ class Model:
 
         return zi
 
-    def createProfileBase(self, profile_idx='all', model_spacing=10, interp_radius=40):
+    def createProfiles(self, profile_idx='all', model_spacing=10, interp_radius=40):
         """Generate base profile geometry without interpolating tTEM models.
 
         This method computes the interpolated profile coordinates (``xi`` and
